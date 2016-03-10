@@ -4,6 +4,31 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+type ext = [`Ext of string | `Obj | `Lib | `Dll | `Exe]
+type t = ext list
+
+let interface_opt_opaque = [`Ext ".mli"; `Ext ".cmi"; `Ext ".cmti"]
+let interface = `Ext ".cmx" :: interface_opt_opaque
+let c_library = [`Lib]
+let c_dll_library = [`Dll]
+let library = [`Ext ".cma"; `Ext ".cmxa"; `Ext ".cmxs"] @ c_library
+let module_library = (interface @ library)
+let exe = [`Exe]
+let ext e = [`Ext e]
+let exts es = List.map (fun e -> `Ext e) es
+
+let ext_to_string c =
+  let ext_obj = Topkg_conf_ocaml.ext_obj c in
+  let ext_lib = Topkg_conf_ocaml.ext_lib c in
+  let ext_dll = Topkg_conf_ocaml.ext_dll c in
+  let ext_exe = Topkg_conf_ocaml.ext_exe c in
+  function
+  | `Ext s -> s
+  | `Obj -> ext_obj
+  | `Lib -> ext_lib
+  | `Dll -> ext_dll
+  | `Exe -> ext_exe
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

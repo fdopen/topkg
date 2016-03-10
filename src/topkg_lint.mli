@@ -4,6 +4,28 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** Package distribution linting.
+
+    See {!Topkg.Private.Lint} for documentation. *)
+
+open Topkg_result
+
+type t
+
+val v :
+  ?deps_excluding:string list option ->
+  ?files:Topkg_fpath.t list option ->
+  ?custom:(unit -> R.msg result list) ->
+  unit -> t
+
+val deps_excluding : t -> string list option
+val files : t -> Topkg_fpath.t list option
+val custom_result : t -> R.msg result list
+
+val codec : t Topkg_codec.t
+val ipc_cmd : custom:bool -> Topkg_cmd.t
+val run_ipc : t -> Topkg_cmd.t -> unit result
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

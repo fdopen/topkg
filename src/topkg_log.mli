@@ -4,6 +4,30 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** Log
+
+    Abridged [logs]. See {!Topkg.Log} for documentation. *)
+
+open Topkg_result
+
+type level = App | Error | Warning | Info | Debug
+
+val level : unit -> level option
+val set_level : level option -> unit
+
+type 'a msgf =
+  (('a, Format.formatter, unit) Pervasives.format -> 'a) -> unit
+
+val msg : level -> 'a msgf -> unit
+val app : 'a msgf -> unit
+val err : 'a msgf -> unit
+val warn : 'a msgf -> unit
+val info : 'a msgf -> unit
+val debug : 'a msgf -> unit
+
+val on_error_msg : ?level:level -> use:(unit -> 'a) -> 'a result -> 'a
+val err_count : unit -> int
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

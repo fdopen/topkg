@@ -4,6 +4,36 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** {!Cmdliner} and common definitions for commands. *)
+
+open Cmdliner
+
+(** {1 Manual sections and fragments} *)
+
+val common_opts :string
+
+val common_opts_man : Manpage.block list
+(** [common_opts_man] is the manual section for common options. *)
+
+val see_also : cmds:string list -> Manpage.block list
+(** [see_also cmds] is a "see also" manpage fragment. *)
+
+(** {1 Converters and arguments} *)
+
+val path_arg : Fpath.t Arg.converter
+(** [path_arg] is a path argument converter. *)
+
+val ignore_pkg : bool Term.t
+(** An [--ignore-pkg] option to ignore the package description file. *)
+
+(** {1 Basic setup for every command} *)
+
+val setup : Fpath.t Term.t
+(** [setup env] defines a basic setup common to all commands and
+    returns the package description file to read. The setup includes,
+    by side effect, setting log verbosity for {!Logs} and ajusting
+    colored output. *)
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

@@ -6,16 +6,23 @@ doc: "http://erratique.ch/software/topkg/doc"
 license: "ISC"
 dev-repo: "http://erratique.ch/repos/topkg.git"
 bug-reports: "http://github.com/dbuenzli/topkg/issues"
-tags: [ ]
+tags: ["packaging" "ocamlbuild" "org:erratique"]
 available: [ ocaml-version >= "4.01.0"]
 depends: [
   "ocamlfind" {build}
   "ocamlbuild" {build}
   "result"
+#  "rresult"  # NOT for topkg
+#  "astring"  # NOT for topkg
+#  "fmt"      # NOT for topkg
+#  "fpath"    # NOT for topkg
+#  "logs"     # NOT for topkg
+#  "bos"      # NOT for topkg
+#  "cmdliner" # NOT for topkg
+#  "opam-lib" {>= "1.2.2"} # NOT for topkg
 ]
-depopts: [ "cmdliner" ]
-build:
-[
-  [ "ocaml" "pkg/build.ml" "native=%{ocaml-native}%"
-                           "native-dynlink=%{ocaml-native-dynlink}%" ]
-]
+build:[[
+  "ocaml" "pkg/pkg.ml" "build"
+          "human" "false"
+          "pkg-name" "%{name}%"
+]]

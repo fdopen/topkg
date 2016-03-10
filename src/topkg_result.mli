@@ -4,6 +4,36 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** Results
+
+    See {!section:Topkg.res} for documention. *)
+
+val ( >>= ) :
+  ('a, 'b) Result.result -> ('a -> ('c, 'b) Result.result) ->
+  ('c, 'b) Result.result
+
+type ('a, 'b) r = ('a, 'b) Result.result = Ok of 'a | Error of 'b
+
+type 'a result = ('a, [ `Msg of string]) r
+
+module R : sig
+
+  val reword_error :
+    ('b -> 'c) -> ('a, 'b) Result.result -> ('a, 'c) Result.result
+
+  type msg = [ `Msg of string ]
+
+  val msgf : ('a, Format.formatter, unit, [> msg]) format4 -> 'a
+
+  val error_msg : string -> ('b, [> msg]) Result.result
+  val error_msgf :
+    ('a, Format.formatter, unit, ('b, [> msg]) Result.result) format4 -> 'a
+
+  val reword_error_msg :
+    ?replace:bool -> (string -> msg) -> ('a, msg) Result.result ->
+    ('a, [> msg]) Result.result
+end
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

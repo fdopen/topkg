@@ -1,33 +1,36 @@
-topkg — The trivial OCaml package builder
+Topkg — The trivial OCaml package builder
 -------------------------------------------------------------------------------
-v%%VERSION%%
+%%VERSION%%
 
-topkg is a package builder for distributing OCaml software. It
-provides a mechanism to describe an opam `.install` file according to
-the build environment and make corresponding invocation in your build
+Topkg is a package builder for distributing OCaml software. It
+provides an API to describe an OPAM install file according to the
+build environment and make corresponding invocation in your build
 system.
 
-The optional `topkg` tool provides is a command line tool for
-streamlining your release workflow until your package gets into opam
-and publish your package documentation.
+The optional topkg-care package provides a library and a command line
+that helps with various aspects of its life cycle: creating and
+linting a distribution, releasing it on the www, publish its
+documentation, add it to the OCaml OPAM repository, etc.
 
-topkg is distributed under the ISC license and has no dependencies.
-The `topkg` tool depends on [Bos][bos] and [Cmdliner][cmdliner].
+Topkg is distributed under the ISC license and has **no**
+dependencies. This is what your packages will need as a *build*
+dependency.
 
-[bos]: http://erratique.ch/software/bos
+Topkg-care is distributed under the ISC license it depends on
+[Cmdliner][cmdliner] and [`opam-lib`].
+
 [cmdliner]: http://erratique.ch/software/cmdliner
-
 
 Home page: http://erratique.ch/software/topkg  
 Contact: Daniel Bünzli `<daniel.buenzl i@erratique.ch>`
 
 ## Installation
 
-topkg can be installed with `opam`:
+Topkg and topkg-care can be installed with `opam`:
 
-    opam install topkg
-    opam install cmdliner bos topkg # for the topkg tool
-
+    opam install topkg       # All you need for your packages
+    opam install topkg-care  # Tools to take care of your packages
+    
 If you don't use `opam` consult the [`opam`](opam) file for build
 instructions.
 

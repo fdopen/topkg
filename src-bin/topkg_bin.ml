@@ -4,6 +4,44 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+open Topkg
+
+let () = Pkg.prevent_standalone_main ()
+
+open Cmdliner
+
+let cmds = [ Lint.cmd; Ipc.cmd ]
+let main _ = `Help (`Pager, None)
+
+(* Command line interface *)
+
+let doc = "topkg package care"
+let man =
+  [ `S "DESCRIPTION";
+    `P "$(b,$(mname)) lints and helps you with various aspects
+        of the life cycle of topkg packages.";
+    `P "Use '$(b,$(mname)) help $(i,COMMAND)' for information about
+        $(i,COMMAND).";
+  ] @ Cli.common_opts_man @ [
+    `S "ENVIRONMENT VARIABLES";
+    `S "BUGS";
+    `P "Report them, see $(i,%%PKG_HOMEPAGE%%) for contact information.";
+    `S "AUTHOR";
+    `P "Daniel C. Buenzli, $(i,http://erratique.ch)"; ]
+
+let main =
+  let version = "%%VERSION%%" in
+  let info = Term.info "topkg" ~version ~doc ~sdocs:Cli.common_opts ~man in
+  let t = Term.(ret (const main $ Cli.setup)) in
+  (t, info)
+
+let main () = match Term.eval_choice main cmds with
+| `Error _ -> exit 1
+| `Ok ret when ret <> 0 -> exit ret
+| _ -> if Logs.err_count () > 0 then exit 1 else exit 0
+
+let () = main ()
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

@@ -4,6 +4,45 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** OPAM helpers.
+
+    See {!Topkg.Private.Opam} for documentation. *)
+
+open Topkg_result
+
+module File : sig
+  type t = (string * string list) list
+  val codec : t Topkg_codec.t
+  val ipc_cmd : Topkg_fpath.t -> Topkg_cmd.t
+  val fields : Topkg_fpath.t -> t result
+end
+
+module Install : sig
+
+  type field =
+  [ `Bin
+  | `Doc
+  | `Etc
+  | `Lib
+  | `Libexec
+  | `Man
+  | `Misc
+  | `Sbin
+  | `Share
+  | `Share_root
+  | `Stublibs
+  | `Toplevel
+  | `Unknown of string ]
+
+  val field_to_string : field -> string
+
+  type move
+  val move : ?maybe:bool -> ?dst:Topkg_fpath.t -> Topkg_fpath.t -> move
+
+  type t = [ `Header of string option ] * (field * move) list
+  val to_string : t -> string
+end
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

@@ -4,6 +4,25 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** File extensions.
+
+    See {!Topkg.Exts} for documentation. *)
+
+type ext = [`Ext of string | `Obj | `Lib | `Dll | `Exe]
+
+type t = ext list
+
+val interface_opt_opaque : ext list
+val interface : ext list
+val c_library : ext list
+val c_dll_library : ext list
+val library : ext list
+val module_library : ext list
+val exe : ext list
+val exts : string list -> ext list
+val ext : string -> ext list
+val ext_to_string : Topkg_conf_ocaml.t -> ext -> string
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

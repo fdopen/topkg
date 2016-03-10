@@ -4,6 +4,41 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** Package install. *)
+
+type file = string * Topkg_fexts.ext
+type field_move =
+  { field : Topkg_opam.Install.field;
+    built : bool;
+    src : file;
+    dst : file; }
+
+type t = field_move list
+
+type field =
+  ?built:bool -> ?cond:bool -> ?exts:Topkg_fexts.t ->
+  ?dst:string -> string -> t
+
+val lib : field
+val libexec : ?auto:bool -> field
+val bin : ?auto:bool -> field
+val sbin : ?auto:bool -> field
+val toplevel : field
+val share : field
+val share_root : field
+val etc : field
+val doc : field
+val stublibs : field
+val misc : field
+val man : field
+
+val to_instructions :
+  ?header:string ->
+  bdir:Topkg_fpath.t -> (* TODO remove *)
+  Topkg_conf_ocaml.t -> t ->
+  (Topkg_fpath.t list * Topkg_opam.Install.t)
+
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

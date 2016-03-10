@@ -4,6 +4,29 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** OCaml configuration.
+
+    See {!Topkg.Env.OCaml} for documentation. *)
+
+(** {1 OCaml configuration} *)
+
+type os = [ `Build_os | `Host_os ]
+
+val tool : string -> os -> Topkg_cmd.t
+
+type t
+val v : os -> t
+val find : string -> t -> string option
+val version : t -> int * int * int * string option
+val ext_obj : t -> string
+val ext_asm : t -> string
+val ext_lib : t -> string
+val ext_dll : t -> string
+val ext_exe : t -> string
+val native : t -> bool
+val native_dynlink : t -> bool
+val dump : Format.formatter -> t -> unit
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

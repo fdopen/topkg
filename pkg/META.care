@@ -1,0 +1,6 @@
+description = "Topkg package care tools"
+version = "%%VERSION%%"
+archive(byte) = "topkg_care.cma"
+archive(byte, plugin) = "topkg_care.cma"
+archive(native) = "topkg_care.cmxa"
+archive(native, plugin) = "topkg_care.cmxs"

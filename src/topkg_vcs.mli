@@ -4,6 +4,29 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+(** VCS repositories.
+
+    See {!Topkg.Vcs} for documentation. *)
+
+open Topkg_result
+
+type kind = [ `Git | `Hg ]
+val pp_kind : Format.formatter -> kind -> unit
+
+type t
+val v : kind -> dir:Topkg_fpath.t -> t
+val kind : t -> kind
+val dir : t -> Topkg_fpath.t
+val find : ?dir:Topkg_fpath.t -> unit -> t option result
+val get : ?dir:Topkg_fpath.t -> unit -> t result
+val pp : Format.formatter -> t -> unit
+
+val is_dirty : t -> bool result
+val not_dirty : t -> unit result
+val head : ?dirty:bool -> t -> string result
+val describe : ?dirty:bool -> ?commitish:string -> t -> string result
+val tracked_files : ?treeish:string -> t -> Topkg_fpath.t list result
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 

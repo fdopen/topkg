@@ -4,6 +4,28 @@
    %%NAME%% %%VERSION%%
   ---------------------------------------------------------------------------*)
 
+open Astring
+open Rresult
+open Bos
+
+let dump_opam_file file =
+  let err_file () = R.error_msgf "%S: can't parse file path" file in
+  R.of_option ~none:err_file (Fpath.of_string file)
+  >>= fun file -> Topkg_care.Opam.fields file
+  >>= fun fs -> Ok (String.Map.bindings fs)
+  >>= fun fs -> OS.File.(write dash (Topkg.Opam.Private.enc_fields fs))
+
+let main () =
+  let log fmt = Printf.eprintf (fmt ^^ "\n%!") in
+  match Array.length Sys.argv with
+  | n when n <> 2 -> log "usage: topkg-opam-fields FILE"; exit 1
+  | _ ->
+      match dump_opam_file Sys.argv.(1) with
+      | Ok () -> exit 0
+      | Error (`Msg m) -> log "topkg-opam-fields: %s" m; exit 1
+
+let () = main ()
+
 (*---------------------------------------------------------------------------
    Copyright (c) 2016 Daniel C. Bünzli
 
